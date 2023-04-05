@@ -1,7 +1,5 @@
 project('pkg-meson', 'c')
 
-cc = meson.get_compiler('c')
-
 libconfig_dep = dependency('libconfig')
 
 executable(
