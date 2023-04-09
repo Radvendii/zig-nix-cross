@@ -8,13 +8,21 @@
       url = "github:mitchellh/zig-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zls-in = {
+      url = "github:zigtools/zls";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        zig-overlay.follows = "zig-in";
+      };
+    };
   };
 
-  outputs = { self, nixpkgs, zig-in }:
+  outputs = { self, nixpkgs, zig-in, zls-in }:
   let
     system = "x86_64-linux";
     overlays = [(final: prev: {
       zig = zig-in.packages.${system}.master;
+      zls = zls-in.packages.${system}.zls;
     })];
     pkgs-native = import nixpkgs {
       inherit system overlays;
@@ -73,6 +81,7 @@
     devShells.${system}.default = pkgs-native.mkShell {
       buildInputs = with pkgs-native; [
         zig
+        zls
         libconfig
         pkg-config
       ];
