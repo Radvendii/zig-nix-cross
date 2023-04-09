@@ -37,7 +37,8 @@
       zig,
       pkg-config,
       libconfig,
-      autoPatchelfHook
+      autoPatchelfHook,
+      target
     }: stdenv.mkDerivation {
       pname = "pkg-zig";
       version = "0.0.1";
@@ -50,7 +51,7 @@
 
       buildPhase = ''
         export HOME=$TMPDIR
-        zig build --prefix $prefix
+        zig build --prefix $prefix -Dtarget=${target}
       '';
     };
 
@@ -73,8 +74,8 @@
     packages.${system} = {
       hello-native = pkgs-native.hello;
       hello-cross = pkgs-cross.hello;
-      pkg-zig-native = pkgs-native.callPackage pkg-zig-func { };
-      pkg-zig-cross = pkgs-cross.callPackage pkg-zig-func { };
+      pkg-zig-native = pkgs-native.callPackage pkg-zig-func { target = "x86_64-linux-gnu"; };
+      pkg-zig-cross = pkgs-cross.callPackage pkg-zig-func { target = "aarch64-linux-gnu"; };
       pkg-meson-native = pkgs-native.callPackage pkg-meson-func { };
       pkg-meson-cross = pkgs-cross.callPackage pkg-meson-func { };
     };
