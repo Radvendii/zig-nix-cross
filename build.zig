@@ -38,7 +38,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    exe.linkSystemLibrary("libconfig");
+    exe.linkSystemLibrary("config");
     exe.linkLibC();
 
     if (getNixFlags(arena.allocator())) |paths| {
